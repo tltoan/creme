@@ -53,11 +53,11 @@ const faq = [
   ],
   [
     "How do I join the beta?",
-    "Fill out the short interest form. We’ll follow up to learn about your week, check availability, and work out your first visit. The scheduling views on this draft are interactive previews.",
+    "Choose to join as a client or as a cook. Clients share their food preferences and schedule; cooks tell us about their experience and availability. We’ll follow up with next steps. The scheduling views on this draft are interactive previews.",
   ],
 ];
 
-function CookApplication() {
+function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
   const [sent, setSent] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -97,9 +97,11 @@ function CookApplication() {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <Button className="btn">
-          Cook with Misé <ArrowUpRight />
-        </Button>
+        {trigger ?? (
+          <Button className="btn">
+            Cook with Misé <ArrowUpRight />
+          </Button>
+        )}
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="modal-overlay" />
@@ -188,6 +190,70 @@ function CookApplication() {
   );
 }
 
+function JoinChoice() {
+  return (
+    <section className="join-choice page-width" aria-labelledby="join-heading">
+      <div className="join-choice-intro">
+        <p className="eyebrow">JOIN THE MISÉ BETA</p>
+        <h1 id="join-heading">
+          A place for you
+          <br />
+          <em>at the table.</em>
+        </h1>
+        <p>Good food brings people together. How would you like to join?</p>
+      </div>
+      <div className="join-role-grid">
+        <a className="join-role-card" href="#join-client">
+          <img src="./mise-salad.jpg" alt="A freshly prepared vegetable bowl" />
+          <div className="join-role-copy">
+            <span className="eyebrow">
+              <Utensils size={15} /> FOR YOUR HOME
+            </span>
+            <h2>
+              Join the beta as a client <ArrowUpRight />
+            </h2>
+            <p>
+              Meals made around your preferences, prepared in your kitchen. Find
+              your weekly rhythm.
+            </p>
+            <span className="join-role-action">
+              Find your cook <ArrowRight size={17} />
+            </span>
+          </div>
+        </a>
+        <CookApplication
+          trigger={
+            <button className="join-role-card" type="button">
+              <img
+                src="./mise-cook.jpg"
+                alt="A cook preparing fresh ingredients in a kitchen"
+              />
+              <div className="join-role-copy">
+                <span className="eyebrow">
+                  <ChefHat size={15} /> FOR YOUR CRAFT
+                </span>
+                <h2>
+                  Join the beta as a cook <ArrowUpRight />
+                </h2>
+                <p>
+                  Bring your skills to local kitchens. Share your experience and
+                  the days you’re free to cook.
+                </p>
+                <span className="join-role-action">
+                  Bring your craft <ArrowRight size={17} />
+                </span>
+              </div>
+            </button>
+          }
+        />
+      </div>
+      <p className="join-choice-note">
+        Tell us a little about yourself. We’ll be in touch with next steps.
+      </p>
+    </section>
+  );
+}
+
 export default function App() {
   const [route, setRoute] = useState(window.location.hash.slice(1) || "home");
   const [mobile, setMobile] = useState(false);
@@ -270,10 +336,12 @@ export default function App() {
         {portal ? (
           <Workspace role={route as "client" | "cook"} />
         ) : route === "join" ? (
+          <JoinChoice />
+        ) : route === "join-client" ? (
           <div className="join-layout">
             <aside className="join-aside">
-              <a href="#home" className="back-link">
-                ← Back to Misé
+              <a href="#join" className="back-link">
+                ← Choose client or cook
               </a>
               <p className="eyebrow">YOUR NEXT GOOD WEEK STARTS HERE</p>
               <h1>

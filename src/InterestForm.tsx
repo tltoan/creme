@@ -490,7 +490,7 @@ export default function InterestForm() {
                 {busy
                   ? "Submitting…"
                   : step === 4
-                    ? "Join the beta"
+                    ? "Join the beta as a client"
                     : "Continue"}
                 <ArrowRight size={18} />
               </Button>

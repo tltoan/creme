@@ -15,7 +15,7 @@ Run `npm ci` and `npm run dev`. Open the local URL printed by Vite.
 - `src/main.tsx`, `src/intro.css`, `mise-handwritten.gif`: opening animation. Reduced-motion users skip it; Escape dismisses it.
 - `DESIGN-NOTES.md`: research, decisions, and photo credits.
 
-Routes: `#home`, `#join`, `#client`, `#cook`. Hash routes work without a server rewrite on GitHub Pages.
+Routes: `#home`, `#join`, `#join-client`, `#client`, `#cook`. `#join` offers client and cook signup choices; the client choice opens the interest form and the cook choice opens the application dialog. Hash routes work without a server rewrite on GitHub Pages.
 
 ## Scheduling preview boundaries
 

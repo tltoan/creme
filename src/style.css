@@ -815,16 +815,6 @@ main:focus {
   font-size: 11px;
 }
 
-
-
-
-
-
-
-
-
-
-
 .faq-section {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -923,6 +913,118 @@ main:focus {
 .footer-bottom a {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.join-choice {
+  max-width: 1060px;
+  padding-top: 54px;
+  padding-bottom: 64px;
+}
+.join-choice-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.join-choice-intro h1 {
+  font-size: clamp(40px, 4.7vw, 64px);
+  letter-spacing: -2.8px;
+  line-height: 1.08;
+  margin: 20px 0;
+}
+.join-choice-intro > p:last-child {
+  font-size: 15px;
+  color: var(--muted-text);
+}
+.join-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.join-role-card {
+  display: block;
+  width: 100%;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  overflow: hidden;
+  text-align: left;
+  color: #191919;
+}
+.join-role-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px #0000000c;
+  border-color: #b9b9b2;
+}
+.join-role-card > img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+.join-role-copy {
+  padding: 29px;
+}
+.join-role-copy .eyebrow {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.join-role-copy h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 25px;
+  letter-spacing: -0.9px;
+  line-height: 1.2;
+  margin: 19px 0 14px;
+}
+.join-role-copy h2 svg {
+  width: 21px;
+  height: 21px;
+}
+.join-role-copy p {
+  font-size: 13px;
+  color: var(--muted-text);
+}
+.join-role-action {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 13px;
+  margin-top: 24px;
+}
+.join-choice-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted-text);
+  margin-top: 27px;
+}
+@media (max-width: 600px) {
+  .join-choice {
+    padding-top: 30px;
+    padding-bottom: 35px;
+  }
+  .join-choice-intro {
+    margin-bottom: 28px;
+  }
+  .join-choice-intro h1 {
+    font-size: 43px;
+    letter-spacing: -2px;
+  }
+  .join-choice-intro > p:last-child {
+    font-size: 13px;
+  }
+  .join-role-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .join-role-card > img {
+    height: 180px;
+  }
+  .join-role-copy {
+    padding: 24px;
+  }
+  .join-role-copy h2 {
+    font-size: 23px;
+  }
 }
 .join-layout {
   display: grid;
@@ -1964,8 +2066,6 @@ main:focus {
     font-size: 12px;
   }
 
-
-
   .faq-section {
     gap: 40px;
     padding: 75px 0;
@@ -2315,15 +2415,6 @@ main:focus {
     font-size: 12px;
   }
 
-
-
-
-
-
-
-
-
-
   .faq-section {
     display: block;
     padding: 65px 0 60px;
@@ -2618,6 +2709,7 @@ main:focus {
     animation: none !important;
     transition: none !important;
   }
+  .join-role-card:hover,
   .btn:hover,
   button:active,
   .btn:active {

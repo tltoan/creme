@@ -1,0 +1,17 @@
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: #000;
+  overflow: hidden;
+}
+
+.intro-screen img {
+  display: block;
+  width: min(542px, 82vw);
+  height: auto;
+  max-height: 75dvh;
+  object-fit: contain;
+}

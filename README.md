@@ -29,6 +29,12 @@ Run `npm run build`, then `touch docs/.nojekyll`. Commit source and `docs/`, and
 
 ## Email delivery
 
+Cook availability uses multi-select weekend windows and an optional travel radius. These are submitted as readable values with the application.
+
+Résumés support one PDF, DOC, or DOCX up to 5 MB, selected through a file picker or drag and drop. Files remain in the browser until submission. Applications with a file use FormSubmit’s documented native `multipart/form-data` upload flow and leave Misé for its verification/confirmation screen. Applications without a file keep the existing AJAX success/error flow. See [FormSubmit file-upload documentation](https://formsubmit.co/documentation). No attachment is serialized into JSON, stored in this repo, or uploaded separately. Link and pasted-résumé options remain available.
+
+Local browser checks intercept submissions to verify multipart file bytes, application fields, size/type validation, and mobile controls. They do not verify actual inbox delivery; check one real attachment after recipient activation before relying on email attachments operationally.
+
 The recipient must activate FormSubmit using the verification email. Submission acceptance does not prove inbox delivery. After activation, make one test signup and verify receipt before promoting the form. Reply directly to a submission email to contact the interested person.
 
 FormSubmit offers an opaque recipient identifier in the activation email; replace the recipient in both `src/App.tsx` and `src/InterestForm.tsx` with that identifier if desired, rebuild, and publish. Do not put Stripe secret keys or customer records in this public repository.

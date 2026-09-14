@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -13,6 +13,9 @@ import {
   X,
   Utensils,
   Sparkles,
+  Upload,
+  FileText,
+  MapPin,
 } from "lucide-react";
 import { Dialog } from "radix-ui";
 import { Button } from "./components/ui/button";
@@ -61,11 +64,65 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
   const [sent, setSent] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
+  const [fileError, setFileError] = useState("");
+  const [dragging, setDragging] = useState(false);
+  const [windows, setWindows] = useState<string[]>([]);
+  const [flexible, setFlexible] = useState(false);
+  const [radius, setRadius] = useState("");
+  const resumeInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const restore = () => setBusy(false);
+    window.addEventListener("pageshow", restore);
+    return () => window.removeEventListener("pageshow", restore);
+  }, []);
+  function chooseResume(files: FileList | File[]) {
+    const file = files[0];
+    if (!file) return;
+    const issue =
+      files.length > 1
+        ? "Please choose one résumé file."
+        : !/\.(pdf|doc|docx)$/i.test(file.name)
+          ? "Choose a PDF, DOC, or DOCX file."
+          : file.size === 0
+            ? "This file is empty. Please choose another file."
+            : file.size > 5 * 1024 * 1024
+              ? "This file is too large. Please choose a file under 5 MB."
+              : "";
+    setFileError(issue);
+    if (issue) {
+      setResume(null);
+      if (resumeInput.current) resumeInput.current.value = "";
+      return;
+    }
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    if (resumeInput.current) resumeInput.current.files = transfer.files;
+    setResume(file);
+  }
+  function removeResume() {
+    setResume(null);
+    setFileError("");
+    if (resumeInput.current) resumeInput.current.value = "";
+  }
   async function send(event: React.FormEvent<HTMLFormElement>) {
+    if (fileError) {
+      event.preventDefault();
+      return;
+    }
+    // FormSubmit documents attachments for native multipart forms. Let the
+    // browser send the actual file instead of serializing it into AJAX JSON.
+    if (resumeInput.current?.files?.length) {
+      setBusy(true);
+      setError("");
+      return;
+    }
     event.preventDefault();
     setBusy(true);
     setError("");
-    const payload = Object.fromEntries(new FormData(event.currentTarget));
+    const fields = new FormData(event.currentTarget);
+    fields.delete("attachment");
+    const payload = Object.fromEntries(fields);
     try {
       const response = await fetch(
         "https://formsubmit.co/ajax/antonyltran@gmail.com",
@@ -95,7 +152,15 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
     }
   }
   return (
-    <Dialog.Root>
+    <Dialog.Root
+      onOpenChange={(open) => {
+        if (!open) {
+          removeResume();
+          setDragging(false);
+          setBusy(false);
+        }
+      }}
+    >
       <Dialog.Trigger asChild>
         {trigger ?? (
           <Button className="btn">
@@ -123,7 +188,19 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
               <Check /> Application received. We’ll be in touch.
             </div>
           ) : (
-            <form className="application-form" onSubmit={send}>
+            <form
+              className="application-form"
+              onSubmit={send}
+              action="https://formsubmit.co/antonyltran@gmail.com"
+              method="POST"
+              encType="multipart/form-data"
+            >
+              <input
+                type="hidden"
+                name="_subject"
+                value="Misé cook beta application"
+              />
+              <input type="hidden" name="_template" value="table" />
               <fieldset className="application-section">
                 <legend>01 / About you</legend>
                 <label>
@@ -240,19 +317,99 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
               <fieldset className="application-section">
                 <legend>03 / Résumé & work samples</legend>
                 <p className="field-help">
-                  Optional. Share a link to your résumé, LinkedIn, portfolio, or
-                  food photos. A view-only link from Google Drive or Dropbox
-                  works too—check that we can open it.
+                  Have a résumé? Add it here. It’s optional, and your experience
+                  above is a great place to start.
                 </p>
-                <label>
-                  Résumé or LinkedIn link (optional)
+                <label
+                  className={`resume-dropzone ${dragging ? "dragging" : ""} ${fileError ? "has-error" : ""}`}
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    setDragging(true);
+                  }}
+                  onDragLeave={(event) => {
+                    if (
+                      !event.currentTarget.contains(
+                        event.relatedTarget as Node | null,
+                      )
+                    )
+                      setDragging(false);
+                  }}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    setDragging(false);
+                    chooseResume(event.dataTransfer.files);
+                  }}
+                >
                   <input
-                    name="Resume or LinkedIn URL"
-                    type="url"
-                    maxLength={2000}
-                    placeholder="https://…"
+                    ref={resumeInput}
+                    className="resume-file-input"
+                    type="file"
+                    name="attachment"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    aria-label="Upload résumé (optional)"
+                    aria-describedby="resume-file-help"
+                    aria-invalid={!!fileError}
+                    onChange={(event) => {
+                      if (event.target.files) chooseResume(event.target.files);
+                    }}
                   />
+                  <span className="upload-icon">
+                    <Upload size={22} />
+                  </span>
+                  <strong>
+                    {dragging
+                      ? "Drop your résumé here"
+                      : resume
+                        ? "Choose a different résumé"
+                        : "Drop your résumé here"}
+                  </strong>
+                  <span>
+                    or <span className="browse-files">browse files</span>
+                  </span>
+                  <small id="resume-file-help">
+                    PDF, DOC, or DOCX · Up to 5 MB · One file
+                  </small>
                 </label>
+                {resume && (
+                  <div className="resume-file-row" role="status">
+                    <FileText size={22} />
+                    <span>
+                      <strong>{resume.name}</strong>
+                      <small>
+                        {(resume.size / 1024 / 1024).toFixed(2)} MB · Ready to
+                        attach
+                      </small>
+                    </span>
+                    <button
+                      type="button"
+                      className="icon-button"
+                      aria-label="Remove résumé"
+                      onClick={removeResume}
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                )}
+                {fileError && (
+                  <div className="file-error" role="alert">
+                    <span>{fileError}</span>
+                    <button type="button" onClick={removeResume}>
+                      Clear
+                    </button>
+                  </div>
+                )}
+                <details className="resume-details">
+                  <summary>Prefer to share a résumé link?</summary>
+                  <label>
+                    Résumé or LinkedIn link (optional)
+                    <input
+                      name="Resume or LinkedIn URL"
+                      type="url"
+                      maxLength={2000}
+                      placeholder="https://…"
+                    />
+                  </label>
+                </details>
                 <label>
                   Portfolio or food photos link (optional)
                   <input
@@ -277,22 +434,153 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
               </fieldset>
               <fieldset className="application-section">
                 <legend>04 / Your availability</legend>
-                <label>
-                  When are you usually available?
-                  <input
-                    name="availability"
-                    maxLength={300}
-                    placeholder="For example: Saturday mornings"
-                  />
-                </label>
-                <label>
-                  How far can you travel for a visit? (optional)
-                  <input
-                    name="Travel area"
-                    maxLength={300}
-                    placeholder="Neighborhoods, towns, or a comfortable travel radius"
-                  />
-                </label>
+                <div className="availability-intro">
+                  <CalendarDays size={20} />
+                  <div>
+                    <h3>Your weekends, your rhythm.</h3>
+                    <p>
+                      Choose the windows when you’re usually free. Select all
+                      that work for you.
+                    </p>
+                  </div>
+                </div>
+                <input
+                  type="hidden"
+                  name="availability"
+                  value={
+                    flexible
+                      ? "Flexible — coordinate with me"
+                      : windows.join("; ") || "Not specified"
+                  }
+                />
+                <div className="cook-day-grid">
+                  {["Saturday", "Sunday"].map((day) => (
+                    <div className="cook-day-card" key={day}>
+                      <h4>{day}</h4>
+                      {[
+                        ["Morning", "9 AM–12 PM"],
+                        ["Afternoon", "12–5 PM"],
+                        ["Evening", "5–9 PM"],
+                      ].map(([time, hours]) => {
+                        const slot = `${day} ${time} (${hours})`,
+                          chosen = !flexible && windows.includes(slot);
+                        return (
+                          <button
+                            type="button"
+                            className={chosen ? "selected" : ""}
+                            aria-pressed={chosen}
+                            aria-label={`${day} ${time}, ${hours}`}
+                            key={time}
+                            onClick={() => {
+                              setFlexible(false);
+                              setWindows((all) =>
+                                all.includes(slot)
+                                  ? all.filter((value) => value !== slot)
+                                  : [...all, slot],
+                              );
+                            }}
+                          >
+                            <span>
+                              <strong>{time}</strong>
+                              <small>{hours}</small>
+                            </span>
+                            <span className="slot-check">
+                              {chosen ? (
+                                <Check size={14} />
+                              ) : (
+                                <Plus size={14} />
+                              )}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className={`flexible-choice ${flexible ? "selected" : ""}`}
+                  aria-pressed={flexible}
+                  onClick={() => {
+                    setFlexible((value) => !value);
+                    setWindows([]);
+                  }}
+                >
+                  <Clock3 size={17} />
+                  <span>My schedule varies. Let’s coordinate.</span>
+                  {flexible && <Check size={16} />}
+                </button>
+                <p className="availability-summary" role="status">
+                  {flexible
+                    ? "Flexible timing selected."
+                    : windows.length
+                      ? `${windows.length} time ${windows.length === 1 ? "window" : "windows"} selected.`
+                      : "No windows selected yet. You can also discuss timing with us."}{" "}
+                  We’ll confirm each visit with you.
+                </p>
+                <fieldset className="travel-fieldset">
+                  <legend>
+                    <MapPin size={19} /> How far would you like to travel?
+                  </legend>
+                  <p className="field-help">
+                    Choose a one-way distance from where you’re based. Optional.
+                  </p>
+                  <div className="travel-grid">
+                    {[
+                      ["5 miles", "Close to home"],
+                      ["10 miles", "Around town"],
+                      ["20 miles", "A little farther"],
+                      ["30+ miles", "Happy to travel"],
+                    ].map(([value, hint]) => (
+                      <label
+                        className={`travel-option ${radius === value ? "selected" : ""}`}
+                        key={value}
+                      >
+                        <input
+                          type="radio"
+                          name="Travel radius"
+                          value={value}
+                          checked={radius === value}
+                          onChange={() => setRadius(value)}
+                        />
+                        <strong>{value}</strong>
+                        <span>{hint}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <label
+                    className={`travel-flexible ${radius === "Flexible — depends on the visit" ? "selected" : ""}`}
+                  >
+                    <input
+                      type="radio"
+                      name="Travel radius"
+                      value="Flexible — depends on the visit"
+                      checked={radius === "Flexible — depends on the visit"}
+                      onChange={(event) => setRadius(event.target.value)}
+                    />
+                    I’m flexible—it depends on the visit.
+                  </label>
+                  {radius && (
+                    <button
+                      type="button"
+                      className="clear-travel"
+                      onClick={() => setRadius("")}
+                    >
+                      Clear distance
+                    </button>
+                  )}
+                </fieldset>
+                <details className="resume-details">
+                  <summary>Anything else about timing or travel?</summary>
+                  <label>
+                    Availability or travel notes (optional)
+                    <textarea
+                      name="Availability and travel notes"
+                      maxLength={1000}
+                      placeholder="Specific neighborhoods, changing class schedules, transport needs, or a different time that works…"
+                    />
+                  </label>
+                </details>
               </fieldset>
               <p className="fine">
                 Submitting lets Misé contact you about cooking opportunities.
@@ -303,8 +591,18 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
                   {error}
                 </p>
               )}
-              <Button className="btn" disabled={busy}>
-                {busy ? "Sending…" : "Send application"}
+              {resume && (
+                <p className="fine">
+                  With a résumé attached, you’ll finish submitting on
+                  FormSubmit. Your file is sent with your application.
+                </p>
+              )}
+              <Button className="btn" disabled={busy || !!fileError}>
+                {busy
+                  ? "Sending…"
+                  : resume
+                    ? "Continue with résumé"
+                    : "Send application"}
                 <ArrowRight />
               </Button>
             </form>

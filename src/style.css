@@ -814,64 +814,22 @@ main:focus {
 .cook-actions .text-button {
   font-size: 11px;
 }
-.origin-section {
-  padding: 110px 0 100px;
-}
-.origin-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 35px;
-}
-.origin-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 90px;
-}
-.origin-grid h2 {
-  font-size: clamp(32px, 3.5vw, 48px);
-}
-.origin-grid p {
-  font-size: 14px;
-  color: var(--muted-text);
-  margin-bottom: 18px;
-}
-.origin-grid .origin-signoff {
-  color: #262622;
-  font-size: 12px;
-}
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line);
-  margin-top: 45px;
-  padding-top: 33px;
-}
-.stats > div {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-left: 30px;
-  border-left: 1px solid var(--line);
-}
-.stats > div:first-child {
-  padding-left: 0;
-  border: 0;
-}
-.stats strong {
-  font-size: 48px;
-  letter-spacing: -2px;
-  font-weight: 400;
-}
-.stats span {
-  font-size: 12px;
-  color: var(--muted-text);
-}
+
+
+
+
+
+
+
+
+
+
+
 .faq-section {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
   gap: 70px;
-  padding: 10px 0 105px;
+  padding: 100px 0 105px;
 }
 .faq-section .eyebrow {
   margin-bottom: 20px;
@@ -1823,9 +1781,7 @@ main:focus {
   .cook-copy {
     padding: 45px 33px;
   }
-  .origin-grid {
-    gap: 50px;
-  }
+
   .join-aside {
     padding: 32px;
   }
@@ -2007,18 +1963,12 @@ main:focus {
   .cook-copy > p:not(.eyebrow) {
     font-size: 12px;
   }
-  .origin-section {
-    padding: 80px 0;
-  }
-  .origin-grid {
-    gap: 35px;
-  }
-  .origin-grid p {
-    font-size: 13px;
-  }
+
+
+
   .faq-section {
     gap: 40px;
-    padding-bottom: 75px;
+    padding: 75px 0;
   }
   .mobile-menu {
     display: grid;
@@ -2364,48 +2314,19 @@ main:focus {
   .cook-actions .text-button {
     font-size: 12px;
   }
-  .origin-section {
-    padding: 65px 0;
-  }
-  .origin-top {
-    align-items: flex-start;
-    gap: 17px;
-    flex-direction: column;
-    margin-bottom: 25px;
-  }
-  .origin-top > .pill {
-    font-size: 8px;
-  }
-  .origin-grid {
-    display: block;
-  }
-  .origin-grid h2 {
-    font-size: 36px;
-    margin-bottom: 25px;
-  }
-  .origin-grid p {
-    font-size: 14px;
-  }
-  .stats {
-    margin-top: 30px;
-    padding-top: 25px;
-    gap: 12px;
-  }
-  .stats strong {
-    font-size: 34px;
-    letter-spacing: -1px;
-  }
-  .stats span {
-    font-size: 9px;
-    line-height: 1.5;
-  }
-  .stats > div {
-    padding-left: 13px;
-    gap: 10px;
-  }
+
+
+
+
+
+
+
+
+
+
   .faq-section {
     display: block;
-    padding-bottom: 60px;
+    padding: 65px 0 60px;
   }
   .faq-list {
     margin-top: 28px;

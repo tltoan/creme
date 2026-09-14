@@ -240,7 +240,6 @@ export default function App() {
         <nav className="desktop-links" aria-label="Main navigation">
           <button onClick={() => section("how")}>How it works</button>
           <button onClick={() => section("for-cooks")}>For cooks</button>
-          <button onClick={() => section("our-story")}>Our story</button>
         </nav>
         <div className="nav-actions">
           <button className="text-button" onClick={() => go("client")}>
@@ -263,7 +262,6 @@ export default function App() {
         <nav className="mobile-menu" aria-label="Mobile navigation">
           <button onClick={() => section("how")}>How it works</button>
           <button onClick={() => section("for-cooks")}>For cooks</button>
-          <button onClick={() => section("our-story")}>Our story</button>
           <button onClick={() => go("client")}>Client schedule</button>
           <button onClick={() => go("cook")}>Cook schedule</button>
         </nav>
@@ -617,52 +615,6 @@ export default function App() {
                   <button className="text-button" onClick={() => go("cook")}>
                     See the cook workspace <ArrowRight size={16} />
                   </button>
-                </div>
-              </div>
-            </section>
-            <section className="origin-section page-width" id="our-story">
-              <div className="origin-top">
-                <p className="eyebrow">FROM OUR KITCHEN TO YOURS</p>
-                <span className="pill">BUILT BY UNC STUDENTS</span>
-              </div>
-              <div className="origin-grid">
-                <h2>
-                  It started with
-                  <br />a four-hour challenge.
-                  <br />
-                  <em>And a very real problem.</em>
-                </h2>
-                <div>
-                  <p>
-                    During summer internships, we kept making the same trade:
-                    expensive delivery, repetitive meal prep, or another weekend
-                    spent in the kitchen. We wanted something that fit the way
-                    we actually lived.
-                  </p>
-                  <p>
-                    So we built Misé. What began as a challenge to raise $1,000
-                    with no capital became $2,000 in revenue and three cooks
-                    onboarded in under a week. Now, 15–20 households want
-                    recurring service.
-                  </p>
-                  <p className="origin-signoff">
-                    Still in beta. Built with our first households, one good
-                    week at a time.
-                  </p>
-                </div>
-              </div>
-              <div className="stats">
-                <div>
-                  <strong>$2,000</strong>
-                  <span>revenue in our first week</span>
-                </div>
-                <div>
-                  <strong>3</strong>
-                  <span>cooks onboarded</span>
-                </div>
-                <div>
-                  <strong>15–20</strong>
-                  <span>households seeking recurring service</span>
                 </div>
               </div>
             </section>

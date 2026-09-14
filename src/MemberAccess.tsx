@@ -22,6 +22,7 @@ import {
 import { api } from "../convex/_generated/api";
 import type { Doc } from "../convex/_generated/dataModel";
 import "./member.css";
+import { EmailLogin } from "./EmailLogin";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL;
 const client = convexUrl ? new ConvexReactClient(convexUrl) : null;
@@ -192,6 +193,10 @@ function SignIn({
             ? "Sign in to view your visits and share when you’re home."
             : "Sign in to see your assigned visits and update your availability."}
         </p>
+        <EmailLogin />
+        <div className="auth-divider">
+          <span>or use a passkey</span>
+        </div>
         <button
           className="btn auth-main-button"
           disabled={busy || !supported}
@@ -216,7 +221,7 @@ function SignIn({
           </p>
         )}
         <div className="auth-first-time">
-          <strong>First time signing in?</strong>
+          <strong>Prefer to create a passkey?</strong>
           <p>
             After applying, create your account. Misé will verify your details
             and complete onboarding before opening your workspace.
@@ -291,6 +296,7 @@ function SignedIn({ requestedRole }: { requestedRole: Role }) {
 }
 
 function CompleteProfile({ requestedRole }: { requestedRole: Role }) {
+  const identity = useQuery(api.account.identity);
   const requestAccess = useMutation(api.members.requestAccess);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -340,6 +346,9 @@ function CompleteProfile({ requestedRole }: { requestedRole: Role }) {
           Contact email
           <input
             name="email"
+            defaultValue={identity?.email ?? ""}
+            key={identity?.email ?? "unverified"}
+            readOnly={Boolean(identity?.emailVerified)}
             type="email"
             autoComplete="email"
             maxLength={254}
@@ -404,7 +413,7 @@ function Pending({ member }: { member: Doc<"members"> }) {
       </p>
       <div className="account-review">
         <Check size={18} />
-        <span>Passkey created</span>
+        <span>Account created</span>
         <span className="status-pill">
           {member.status === "suspended" ? "Paused" : "Awaiting approval"}
         </span>
@@ -512,6 +521,7 @@ function MemberWorkspace({ member }: { member: Doc<"members"> }) {
         </div>
         <Availability member={member} />
       </div>
+      <AccountPasswordSettings />
       <PasskeySettings />
     </section>
   );
@@ -648,6 +658,45 @@ function PasskeySettings() {
         <Fingerprint size={18} />
         {busy ? "Follow your device’s prompt…" : "Add a passkey"}
       </button>
+    </div>
+  );
+}
+
+function AccountPasswordSettings() {
+  const identity = useQuery(api.account.identity);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  if (!identity) return null;
+  return (
+    <div className="account-password-settings">
+      <div className="passkey-settings">
+        <div>
+          <h3>Email and password</h3>
+          <p>
+            {identity.hasPassword && identity.emailVerified
+              ? `Email verified: ${identity.email}`
+              : "Add email and password as another way to access this account."}
+          </p>
+          {message && <p role="status">{message}</p>}
+        </div>
+        {(!identity.hasPassword || !identity.emailVerified) && (
+          <button className="btn outline" onClick={() => setOpen(!open)}>
+            {open ? "Close" : "Add email and password"}
+          </button>
+        )}
+      </div>
+      {open && (
+        <EmailLogin
+          attach
+          initialEmail={identity.email ?? ""}
+          onComplete={() => {
+            setOpen(false);
+            setMessage(
+              "Email verified. You can now log in with your password.",
+            );
+          }}
+        />
+      )}
     </div>
   );
 }

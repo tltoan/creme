@@ -8,9 +8,14 @@
  * @module
  */
 
+import type * as account from "../account.js";
 import type * as auth from "../auth.js";
+import type * as authIdentity from "../authIdentity.js";
+import type * as emailSender from "../emailSender.js";
+import type * as emailValidation from "../emailValidation.js";
 import type * as http from "../http.js";
 import type * as members from "../members.js";
+import type * as passwordProvider from "../passwordProvider.js";
 import type * as visits from "../visits.js";
 
 import type {
@@ -20,9 +25,14 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  account: typeof account;
   auth: typeof auth;
+  authIdentity: typeof authIdentity;
+  emailSender: typeof emailSender;
+  emailValidation: typeof emailValidation;
   http: typeof http;
   members: typeof members;
+  passwordProvider: typeof passwordProvider;
   visits: typeof visits;
 }>;
 
@@ -52,4 +62,6 @@ export declare const internal: FilterApi<
   FunctionReference<any, "internal">
 >;
 
-export declare const components: {};
+export declare const components: {
+  rateLimiter: import("@convex-dev/rate-limiter/_generated/component.js").ComponentApi<"rateLimiter">;
+};

@@ -1,4 +1,4 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { requireSignedInUserId } from "./authIdentity";
 import { ConvexError, v } from "convex/values";
 import {
   query,
@@ -11,8 +11,7 @@ import {
 import schema, { role, availabilitySlot } from "./schema";
 
 async function currentMember(ctx: QueryCtx | MutationCtx) {
-  const userId = await getAuthUserId(ctx);
-  if (!userId) throw new ConvexError("Sign in to continue.");
+  const userId = await requireSignedInUserId(ctx);
   return ctx.db
     .query("members")
     .withIndex("by_userId", (q) => q.eq("userId", userId))
@@ -43,12 +42,14 @@ export const requestAccess = mutation({
   args: { name: v.string(), contactEmail: v.string(), requestedRole: role },
   returns: v.id("members"),
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new ConvexError("Sign in to continue.");
+    const userId = await requireSignedInUserId(ctx);
     const existing = await currentMember(ctx);
     if (existing) return existing._id;
     const name = args.name.trim();
     const contactEmail = args.contactEmail.trim().toLowerCase();
+    const user = await ctx.db.get(userId);
+    if (user?.emailVerificationTime && user.email !== contactEmail)
+      throw new ConvexError("Use your verified account email.");
     if (
       name.length < 2 ||
       name.length > 100 ||

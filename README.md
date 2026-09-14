@@ -10,7 +10,7 @@ Run `npm ci` and `npm run dev`. Open the local URL printed by Vite.
 
 - `src/App.tsx`: homepage, navigation, cook application, hash routes.
 - `src/InterestForm.tsx`: five-step client interest form.
-- `src/MemberAccess.tsx`: passkey sign-in, onboarding gate, and client/cook workspaces.
+- `src/MemberAccess.tsx`: passkey and email/password sign-in, onboarding gate, and client/cook workspaces.
 - `src/Workspace.tsx`: retained design prototype; not imported, routed, or included in the production JavaScript bundle.
 - `src/style.css`: responsive monochrome design and interaction styles.
 - `src/main.tsx`, `src/intro.css`, `mise-handwritten.gif`: opening animation. Reduced-motion users skip it; Escape dismisses it.
@@ -22,7 +22,7 @@ Routes: `#home`, `#join`, `#join-client`, `#login`. `#join` offers client and co
 
 Passkey registration, login, logout, approved client/cook workspaces, private visit reads, and persistent weekend availability are implemented. Pending and suspended members cannot access schedule data. Contact email and the role selector do not establish identity or grant access; staff verifies onboarding and assigns the role to an authenticated account.
 
-See [MEMBER-ACCESS.md](MEMBER-ACCESS.md) for staff approval, account recovery, deployment settings, and verification details. Authentication uses the Convex plugin's pinned passkey build; no email/password auth or email delivery service is configured. The existing intake forms still use FormSubmit. No existing customer or payment records have been imported.
+See [MEMBER-ACCESS.md](MEMBER-ACCESS.md) for staff approval, account recovery, deployment settings, and verification details. Authentication uses the Convex plugin's pinned passkey build; email/password verification and reset are implemented with a Gmail sender, awaiting its app password and enable flag. See the Gmail setup section in MEMBER-ACCESS.md. The existing intake forms still use FormSubmit. No existing customer or payment records have been imported.
 
 ## Deploy
 

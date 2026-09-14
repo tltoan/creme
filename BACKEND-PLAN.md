@@ -26,7 +26,7 @@ Keep code in GitHub. The member app has moved to Vercel; retain GitHub for sourc
 
 After verified sign-in, resolve the member record on the server. Check approved onboarding and role on every query, mutation, and file operation. Derive roles from staff-managed records, never a client-selected role or editable profile claim. A cook accepts an assignment made by Misé; a client cannot browse and choose cooks.
 
-Use a maintained auth integration supported by Convex. [Convex's authentication documentation](https://docs.convex.dev/auth/overview) lists options and notes that its own Convex Auth library is currently beta. The implemented passkey flow uses staff verification of the exact authenticated account reference, with no automatic email linking. See MEMBER-ACCESS.md for the current approval process.
+Use a maintained auth integration supported by Convex. [Convex's authentication documentation](https://docs.convex.dev/auth/overview) lists options and notes that its own Convex Auth library is currently beta. The implemented passkey and email/password flows use staff verification of the exact authenticated account reference, with no automatic email linking. See MEMBER-ACCESS.md for the current approval process.
 
 ## Records to implement
 
@@ -56,6 +56,6 @@ Deduplicate by normalized email; flag ambiguous records for review. Import as ex
 1. Completed: activate Convex, connect development, and deploy production authentication.
 2. Completed: client/cook roles and onboarding checks with deny-by-default access. Staff uses internal Convex review functions; a staff web console remains to be built.
 3. Completed: private visit reads and persisted availability, tested for unauthorized and cross-account access. Next: staff visit assignment, acceptance, and overlapping-visit checks.
-4. Move signup intake and private file storage into the backend; configure transactional email.
+4. Move signup intake and private file storage into the backend; activate the implemented Gmail verification/reset sender.
 5. Review/import verified offline customers and payments, then authorize account invitations.
 6. Vercel frontend and Convex production are deployed. Real booking/assignment workflow and offline customer imports remain before announcing full scheduling service.

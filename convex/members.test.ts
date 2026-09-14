@@ -11,11 +11,36 @@ async function setup() {
     const clientUser = await ctx.db.insert("users", {});
     const otherUser = await ctx.db.insert("users", {});
     const cookUser = await ctx.db.insert("users", {});
-    return { clientUser, otherUser, cookUser };
+    const clientSession = await ctx.db.insert("authSessions", {
+      userId: clientUser,
+      expirationTime: 9999999999999,
+    });
+    const otherSession = await ctx.db.insert("authSessions", {
+      userId: otherUser,
+      expirationTime: 9999999999999,
+    });
+    const cookSession = await ctx.db.insert("authSessions", {
+      userId: cookUser,
+      expirationTime: 9999999999999,
+    });
+    return {
+      clientUser,
+      otherUser,
+      cookUser,
+      clientSession,
+      otherSession,
+      cookSession,
+    };
   });
-  const client = t.withIdentity({ subject: ids.clientUser });
-  const other = t.withIdentity({ subject: ids.otherUser });
-  const cook = t.withIdentity({ subject: ids.cookUser });
+  const client = t.withIdentity({
+    subject: `${ids.clientUser}|${ids.clientSession}`,
+  });
+  const other = t.withIdentity({
+    subject: `${ids.otherUser}|${ids.otherSession}`,
+  });
+  const cook = t.withIdentity({
+    subject: `${ids.cookUser}|${ids.cookSession}`,
+  });
   const make = (
     actor: typeof client,
     requestedRole: "client" | "cook",

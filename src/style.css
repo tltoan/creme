@@ -914,6 +914,85 @@ main:focus {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.member-access {
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 80px;
+  max-width: 1080px;
+  padding: 70px 0 100px;
+}
+.member-intro h1 {
+  font-size: clamp(44px, 5.4vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -3px;
+  margin: 25px 0;
+}
+.member-intro > p:last-child {
+  font-size: 15px;
+  color: var(--muted-text);
+  max-width: 330px;
+}
+.member-access-card {
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  padding: 38px;
+  background: var(--soft);
+}
+.member-lock {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  margin-bottom: 25px;
+}
+.member-access-card h2 {
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.member-access-card > p {
+  font-size: 14px;
+  color: var(--muted-text);
+  margin-bottom: 24px;
+}
+.member-access-card > .btn {
+  width: 100%;
+}
+.member-join {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+  font-size: 12px;
+}
+.member-join > span {
+  color: var(--muted-text);
+}
+.member-join a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+@media (max-width: 700px) {
+  .member-access {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 0 50px;
+  }
+  .member-intro h1 {
+    font-size: 53px;
+  }
+  .member-access-card {
+    padding: 28px;
+  }
+}
 .join-choice {
   max-width: 1060px;
   padding-top: 54px;

@@ -1,6 +1,6 @@
 # Misé
 
-Meal prep private chef beta website hosted on GitHub Pages. The homepage explains the service, recruits cooks, and introduces separate client and cook scheduling previews. FormSubmit forwards interest forms and cook applications to the configured inbox; the repository contains no submitted customer records.
+Meal prep private chef beta website. The public homepage explains the service and accepts client and cook applications. Scheduling previews have been removed from the public site. FormSubmit forwards applications to the configured inbox; the repository contains no submitted customer records.
 
 Project: `/Users/antony/Projects/creme`. The original folder and GitHub repository names remain unchanged. Live: https://tltoan.github.io/creme/
 
@@ -10,22 +10,25 @@ Run `npm ci` and `npm run dev`. Open the local URL printed by Vite.
 
 - `src/App.tsx`: homepage, navigation, cook application, hash routes.
 - `src/InterestForm.tsx`: five-step client interest form.
-- `src/Workspace.tsx`: interactive scheduling prototype shared between client and cook views.
+- `src/MemberAccess.tsx`: honest member-access holding page until authentication is connected.
+- `src/Workspace.tsx`: retained design prototype; not imported, routed, or included in the production JavaScript bundle.
 - `src/style.css`: responsive monochrome design and interaction styles.
 - `src/main.tsx`, `src/intro.css`, `mise-handwritten.gif`: opening animation. Reduced-motion users skip it; Escape dismisses it.
 - `DESIGN-NOTES.md`: research, decisions, and photo credits.
 
-Routes: `#home`, `#join`, `#join-client`, `#client`, `#cook`. `#join` offers client and cook signup choices; the client choice opens the interest form and the cook choice opens the application dialog. Hash routes work without a server rewrite on GitHub Pages.
+Routes: `#home`, `#join`, `#join-client`, `#login`. `#join` offers client and cook signup choices. Legacy `#client` and `#cook` links show the member-access holding page; they do not expose the prototype. Hash routes work without a server rewrite.
 
-## Scheduling preview boundaries
+## Member access and backend status
 
-The client and cook views share sample state while switching roles. Request, reschedule, cancel, accept, decline, edit food preferences, and save recurring weekend availability are interactive. Reloading or leaving the workspace resets this state. Requests only allow weekend dates; cook acceptance checks saved availability and conflicts in the same half-day window.
+Member authentication and a shared database are not connected yet. The login entry collects no credentials and displays no customer schedules. Future access must be checked on the backend against verified identity, staff-approved onboarding, and the account role. Removing navigation or hiding a component is not a replacement for those checks.
 
-This is not an authenticated booking system. No real booking, cook assignment, payment, calendar sync, or customer address is created. Production needs shared storage, account roles and access rules, Misé assignment operations, and notifications. Keep the preview labels until those are connected.
+See `BACKEND-PLAN.md` for the proposed Convex system, offline customer import fields, and hosting comparison. Convex's global Codex plugin was installed separately using its official agent setup guide. No Convex project was initialized and no project-managed AI files were generated because this repo does not yet meet the guide's existing-project criteria.
 
 ## Publish an update
 
 Run `npm run build`, then `touch docs/.nojekyll`. Commit source and `docs/`, and push to `main`. GitHub Pages publishes from `main:/docs`.
+
+The current Pages deployment remains an informational signup site. Move the commercial member application to Cloudflare or another appropriate application host before enabling authentication and private scheduling; see [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
 
 ## Email delivery
 

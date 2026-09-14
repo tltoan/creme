@@ -20,7 +20,7 @@ import {
 import { Dialog } from "radix-ui";
 import { Button } from "./components/ui/button";
 import InterestForm from "./InterestForm";
-import Workspace from "./Workspace";
+import MemberAccess from "./MemberAccess";
 
 export function tactile() {
   if (
@@ -56,7 +56,7 @@ const faq = [
   ],
   [
     "How do I join the beta?",
-    "Choose to join as a client or as a cook. Clients share their food preferences and schedule; cooks tell us about their experience and availability. We’ll follow up with next steps. The scheduling views on this draft are interactive previews.",
+    "Choose to join as a client or as a cook. Clients share their food preferences and schedule; cooks tell us about their experience and availability. We’ll follow up with next steps. Client and cook accounts are reserved for onboarded members.",
   ],
 ];
 
@@ -680,7 +680,6 @@ function JoinChoice() {
 export default function App() {
   const [route, setRoute] = useState(window.location.hash.slice(1) || "home");
   const [mobile, setMobile] = useState(false);
-  const [audience, setAudience] = useState<"client" | "cook">("client");
   useEffect(() => {
     const navigate = () => {
       setRoute(window.location.hash.slice(1) || "home");
@@ -690,7 +689,7 @@ export default function App() {
     window.addEventListener("hashchange", navigate);
     return () => window.removeEventListener("hashchange", navigate);
   }, []);
-  const portal = route === "client" || route === "cook";
+  const memberAccess = ["login", "client", "cook"].includes(route);
   function section(id: string) {
     const behavior = window.matchMedia("(prefers-reduced-motion: reduce)")
       .matches
@@ -731,8 +730,8 @@ export default function App() {
           <button onClick={() => section("for-cooks")}>For cooks</button>
         </nav>
         <div className="nav-actions">
-          <button className="text-button" onClick={() => go("client")}>
-            My week <ArrowUpRight size={15} />
+          <button className="text-button" onClick={() => go("login")}>
+            Log in <ArrowUpRight size={15} />
           </button>
           <Button className="btn small" onClick={() => go("join")}>
             Join the beta <ArrowUpRight />
@@ -751,13 +750,12 @@ export default function App() {
         <nav className="mobile-menu" aria-label="Mobile navigation">
           <button onClick={() => section("how")}>How it works</button>
           <button onClick={() => section("for-cooks")}>For cooks</button>
-          <button onClick={() => go("client")}>Client schedule</button>
-          <button onClick={() => go("cook")}>Cook schedule</button>
+          <button onClick={() => go("login")}>Log in</button>
         </nav>
       )}
       <main id="main" tabIndex={-1}>
-        {portal ? (
-          <Workspace role={route as "client" | "cook"} />
+        {memberAccess ? (
+          <MemberAccess />
         ) : route === "join" ? (
           <JoinChoice />
         ) : route === "join-client" ? (
@@ -972,103 +970,6 @@ export default function App() {
                 </Button>
               </div>
             </section>
-            <section className="workspace-teaser page-width" id="your-week">
-              <div className="section-heading">
-                <div>
-                  <p className="eyebrow">EVERYONE ON THE SAME PAGE</p>
-                  <h2>
-                    A little planning.
-                    <br />
-                    <em>A lot of possibility.</em>
-                  </h2>
-                </div>
-                <div
-                  className="audience-switch"
-                  aria-label="Choose a scheduling preview"
-                >
-                  <button
-                    aria-pressed={audience === "client"}
-                    className={audience === "client" ? "active" : ""}
-                    onClick={() => setAudience("client")}
-                  >
-                    For your home
-                  </button>
-                  <button
-                    aria-pressed={audience === "cook"}
-                    className={audience === "cook" ? "active" : ""}
-                    onClick={() => setAudience("cook")}
-                  >
-                    For your craft
-                  </button>
-                </div>
-              </div>
-              <div className="teaser-shell">
-                <div className="teaser-copy">
-                  <span className="pill">SCHEDULING PREVIEW</span>
-                  <h3>
-                    {audience === "client"
-                      ? "Your week. Beautifully in order."
-                      : "Your craft. A fuller calendar."}
-                  </h3>
-                  <p>
-                    {audience === "client"
-                      ? "Request a prep day, keep your preferences in one place, and see what’s coming up. Misé takes care of finding your cook."
-                      : "Set when you’re free, review incoming visits, and keep the details of each kitchen close at hand."}
-                  </p>
-                  <Button className="btn" onClick={() => go(audience)}>
-                    {audience === "client"
-                      ? "Explore the client view"
-                      : "Explore the cook view"}
-                    <ArrowUpRight />
-                  </Button>
-                  <span className="teaser-note">
-                    Try the flow with sample visits.
-                  </span>
-                </div>
-                <div className="mini-calendar" aria-label="Example week">
-                  <div className="mini-calendar-head">
-                    <span>
-                      <CalendarDays size={18} /> A good week ahead
-                    </span>
-                    <span>WEEKEND PREP</span>
-                  </div>
-                  <div className="mini-days">
-                    {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
-                      <div className={i === 5 ? "chosen" : ""} key={i}>
-                        <span>{d}</span>
-                        <strong>{14 + i}</strong>
-                        <span className="calendar-dot" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mini-visit">
-                    <span className="circle-icon">
-                      <ChefHat />
-                    </span>
-                    <div>
-                      <strong>
-                        {audience === "client"
-                          ? "Your weekly prep"
-                          : "Your next kitchen"}
-                      </strong>
-                      <p>Saturday · 10:00 AM</p>
-                    </div>
-                    <span className="pill">
-                      {audience === "client" ? "REQUESTED" : "INVITATION"}
-                    </span>
-                  </div>
-                  <div className="mini-visit muted">
-                    <span className="circle-icon">
-                      <Check />
-                    </span>
-                    <div>
-                      <strong>Everything in its place.</strong>
-                      <p>Menu, groceries, and timing. Together.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
             <section className="cook-section page-width" id="for-cooks">
               <div className="cook-photo">
                 <img
@@ -1103,9 +1004,6 @@ export default function App() {
                 </ul>
                 <div className="cook-actions">
                   <CookApplication />
-                  <button className="text-button" onClick={() => go("cook")}>
-                    See the cook workspace <ArrowRight size={16} />
-                  </button>
                 </div>
               </div>
             </section>
@@ -1157,8 +1055,7 @@ export default function App() {
           </p>
           <div>
             <a href="#join">Join the beta</a>
-            <a href="#client">Client preview</a>
-            <a href="#cook">Cook preview</a>
+            <a href="#login">Log in</a>
           </div>
         </div>
         <div className="footer-bottom">

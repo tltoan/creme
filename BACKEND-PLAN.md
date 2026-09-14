@@ -1,10 +1,10 @@
 # Misé member platform
 
-Status: proposed implementation. Public scheduling demos are removed. Authentication, database, customer imports, and the new hosting deployment are not yet connected.
+Status: public scheduling demos are removed. Passkey login, pending/approved/suspended membership, staff-controlled client/cook roles, scoped visit queries, and persisted availability are implemented. The frontend is deployed to Vercel and the backend to Convex production. The local development deployment is separate. Staff approvals currently use internal Convex functions; visit assignment/admin UI, offline customer imports, private résumé storage, and payment workflows remain to be implemented. See MEMBER-ACCESS.md.
 
 ## Hosting choice
 
-Pricing checked September 14, 2026. Recommendation: Cloudflare Pages for the existing React frontend and Convex for the member backend. At this beta's expected scale, $0 in platform charges is a reasonable starting target within free-tier limits, not a guaranteed bill. Domain registration, email delivery, payment fees, backups, and usage overages are separate considerations.
+Pricing checked September 14, 2026. Selected hosting: Vercel (the owner already has an active Pro team) for the React frontend and Convex for the member backend. Cloudflare Pages remains a lower-cost frontend alternative. At this beta's expected scale, Convex may fit within its free-tier limits; the existing Vercel Pro plan has its own billing and usage limits. Domain registration, email delivery, payment fees, backups, and usage overages are separate considerations.
 
 | Service | Starting cost | Upgrade model |
 | --- | --- | --- |
@@ -14,9 +14,9 @@ Pricing checked September 14, 2026. Recommendation: Cloudflare Pages for the exi
 
 Convex is well suited to live schedules and a TypeScript codebase. Supabase remains a viable all-in-one Postgres/auth/storage alternative; it is not intrinsically more expensive at beta scale. Convex developer seats are the people building the app, not customers or cooks. Supabase free projects can pause after a week of inactivity.
 
-Keep code in GitHub. Move the commercial member app off GitHub Pages before enabling sign-in: its [usage limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) exclude hosting commercial SaaS and sensitive transactions such as passwords.
+Keep code in GitHub. The member app has moved to Vercel; retain GitHub for source control. GitHub Pages [usage limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) exclude hosting commercial SaaS and sensitive transactions such as passwords.
 
-## Access model
+## Target access model (partially implemented)
 
 - Public: service information and client/cook applications only.
 - Pending applicant: no schedule or customer-data access.
@@ -26,7 +26,7 @@ Keep code in GitHub. Move the commercial member app off GitHub Pages before enab
 
 After verified sign-in, resolve the member record on the server. Check approved onboarding and role on every query, mutation, and file operation. Derive roles from staff-managed records, never a client-selected role or editable profile claim. A cook accepts an assignment made by Misé; a client cannot browse and choose cooks.
 
-Use a maintained auth integration supported by Convex. [Convex's authentication documentation](https://docs.convex.dev/auth/overview) lists options and notes that its own Convex Auth library is currently beta. Choose the auth implementation when initializing the project, with explicit verified-email and invitation requirements.
+Use a maintained auth integration supported by Convex. [Convex's authentication documentation](https://docs.convex.dev/auth/overview) lists options and notes that its own Convex Auth library is currently beta. The implemented passkey flow uses staff verification of the exact authenticated account reference, with no automatic email linking. See MEMBER-ACCESS.md for the current approval process.
 
 ## Records to implement
 
@@ -53,9 +53,9 @@ Deduplicate by normalized email; flag ambiguous records for review. Import as ex
 
 ## Delivery order
 
-1. Activate the installed Convex plugin by restarting Codex; initialize or connect the actual Misé project.
-2. Implement admin, client, and cook roles and onboarding checks with deny-by-default access.
-3. Replace sample scheduling state with authenticated queries and mutations; test unauthorized and cross-household access, cook assignment, and overlapping visits.
+1. Completed: activate Convex, connect development, and deploy production authentication.
+2. Completed: client/cook roles and onboarding checks with deny-by-default access. Staff uses internal Convex review functions; a staff web console remains to be built.
+3. Completed: private visit reads and persisted availability, tested for unauthorized and cross-account access. Next: staff visit assignment, acceptance, and overlapping-visit checks.
 4. Move signup intake and private file storage into the backend; configure transactional email.
 5. Review/import verified offline customers and payments, then authorize account invitations.
-6. Deploy the React frontend on Cloudflare, connect the domain, and verify real sign-in and an end-to-end booking before announcing member access.
+6. Vercel frontend and Convex production are deployed. Real booking/assignment workflow and offline customer imports remain before announcing full scheduling service.

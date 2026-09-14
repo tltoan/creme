@@ -1,0 +1,456 @@
+.auth-card {
+  align-self: start;
+}
+.auth-role-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: #f2f2ef;
+  padding: 5px;
+  border-radius: 16px;
+  margin-bottom: 34px;
+}
+.auth-role-picker button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 8px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #70706a;
+  font: inherit;
+  cursor: pointer;
+}
+.auth-role-picker button[aria-pressed="true"] {
+  background: white;
+  color: #171715;
+  box-shadow: 0 2px 7px #0000000a;
+}
+.auth-main-button {
+  width: 100%;
+  margin-top: 25px;
+}
+.auth-explainer {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  color: #76766f;
+  margin-top: 14px;
+}
+.auth-first-time {
+  padding-top: 25px;
+  margin-top: 25px;
+  border-top: 1px solid #e4e4de;
+}
+.auth-first-time p {
+  font-size: 14px;
+  color: #77776f;
+  line-height: 1.7;
+}
+.auth-first-time .btn {
+  width: 100%;
+  margin-top: 6px;
+}
+.auth-help {
+  font-size: 12px;
+  color: #77776f;
+  display: block;
+  margin-top: 24px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.auth-error {
+  background: #fff0ec;
+  color: #922d16;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.auth-success {
+  color: #2c5640;
+  font-size: 14px;
+}
+.auth-photo {
+  margin-top: 32px;
+  position: relative;
+  max-width: 420px;
+  height: 205px;
+  border-radius: 22px;
+  overflow: hidden;
+}
+.auth-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.auth-photo:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent, #0006);
+}
+.auth-photo span {
+  position: absolute;
+  bottom: 20px;
+  left: 23px;
+  color: #fff;
+  z-index: 1;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 23px;
+}
+.member-loading {
+  min-height: 55vh;
+  display: grid;
+  place-items: center;
+  color: #77776f;
+}
+.account-shell {
+  padding-top: 35px;
+  padding-bottom: 80px;
+  min-height: 75vh;
+}
+.account-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e6e6e1;
+}
+.account-top .text-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.account-onboarding {
+  max-width: 590px;
+  margin: 65px auto;
+}
+.account-onboarding h1,
+.workspace-welcome h1 {
+  font-size: clamp(34px, 4vw, 54px);
+  font-weight: 400;
+  letter-spacing: -2px;
+  line-height: 1.12;
+  margin: 18px 0 24px;
+}
+.account-onboarding h1 em,
+.workspace-welcome h1 em {
+  font-family: Georgia, serif;
+}
+.account-onboarding > p {
+  color: #787870;
+  line-height: 1.8;
+}
+.auth-profile-form {
+  display: grid;
+  gap: 22px;
+  margin-top: 32px;
+}
+.auth-profile-form > label,
+.account-reference,
+.availability-note {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+.auth-profile-form input:not([type="radio"]),
+.account-reference input,
+.availability-note textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dcdcd5;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 10px;
+  font: inherit;
+  color: #191916;
+}
+.auth-profile-form fieldset {
+  border: 0;
+  padding: 0;
+  display: flex;
+  gap: 12px;
+}
+.auth-profile-form legend {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.auth-profile-form fieldset label {
+  flex: 1;
+  border: 1px solid #dcdcd5;
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.auth-profile-form input {
+  accent-color: #171715;
+}
+.account-review {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e3e3dd;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 30px 0;
+}
+.account-review .status-pill {
+  margin-left: auto;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0f0eb;
+  border: 1px solid #e4e4dd;
+  border-radius: 999px;
+  font-size: 11px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+.account-reference {
+  margin: 22px 0;
+}
+.account-reference input {
+  font-family: monospace;
+  font-size: 12px;
+  color: #777;
+}
+.workspace-welcome {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 50px 0 36px;
+}
+.workspace-welcome h1 {
+  margin-bottom: 0;
+}
+.account-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.account-panel {
+  border: 1px solid #e1e1da;
+  border-radius: 24px;
+  padding: 30px;
+}
+.account-panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.account-panel h2 {
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.7px;
+  margin: 0;
+}
+.account-panel > p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #77776f;
+  margin: 14px 0 25px;
+}
+.visits-empty {
+  text-align: center;
+  background: #f7f7f3;
+  border-radius: 17px;
+  padding: 40px 23px;
+}
+.visits-empty > svg {
+  margin-bottom: 12px;
+  color: #77776f;
+}
+.visits-empty h3 {
+  font-family: Georgia, serif;
+  font-size: 23px;
+  font-weight: 400;
+}
+.visits-empty p {
+  font-size: 14px;
+  color: #77776f;
+  line-height: 1.8;
+}
+.visits-empty a {
+  justify-content: center;
+  margin-top: 20px;
+}
+.member-slot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.member-slot-grid fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.member-slot-grid legend {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.member-slot-grid label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e1e1da;
+  border-radius: 12px;
+  padding: 12px 9px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.member-slot-grid label.selected {
+  background: #181816;
+  color: white;
+  border-color: #181816;
+}
+.member-slot-grid label input {
+  accent-color: #181816;
+  width: 14px;
+  height: 14px;
+}
+.member-slot-grid label span {
+  text-transform: capitalize;
+}
+.member-slot-grid label small {
+  display: block;
+  font-size: 10px;
+  margin-top: 4px;
+  opacity: 0.65;
+}
+.member-slot-grid label > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.availability-note {
+  margin-top: 23px;
+  margin-bottom: 22px;
+}
+.availability-note > span {
+  font-weight: 400;
+  color: #888;
+  font-size: 12px;
+}
+.availability-note textarea {
+  resize: vertical;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.account-panel > .btn {
+  width: 100%;
+}
+.real-visit-list {
+  list-style: none;
+  padding: 0;
+}
+.real-visit-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid #e1e1da;
+  padding: 20px 0;
+}
+.real-visit-list li div {
+  display: grid;
+  gap: 7px;
+  font-size: 14px;
+}
+.real-visit-list li div span,
+.real-visit-list li p {
+  font-size: 13px;
+  color: #77776f;
+}
+.real-visit-list li p {
+  width: 100%;
+  line-height: 1.7;
+}
+.passkey-settings {
+  margin-top: 28px;
+  padding: 25px 0;
+  border-top: 1px solid #e1e1da;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.passkey-settings h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.passkey-settings p {
+  font-size: 13px;
+  color: #77776f;
+  line-height: 1.7;
+}
+.account-shell button:disabled,
+.auth-card button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.auth-role-picker button:focus-visible,
+.member-slot-grid label:focus-within {
+  outline: 2px solid #777;
+  outline-offset: 3px;
+}
+@media (max-width: 800px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+  .workspace-welcome {
+    display: block;
+  }
+  .workspace-welcome > .status-pill {
+    margin-top: 25px;
+  }
+  .account-panel {
+    padding: 23px;
+  }
+  .auth-photo {
+    display: none;
+  }
+  .passkey-settings {
+    align-items: start;
+    flex-direction: column;
+  }
+  .account-review {
+    flex-wrap: wrap;
+  }
+  .account-review .status-pill {
+    margin-left: 0;
+  }
+  .account-onboarding {
+    margin: 38px auto;
+  }
+  .auth-role-picker {
+    margin-bottom: 25px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .auth-role-picker button,
+  .member-slot-grid label {
+    transition:
+      background 0.18s,
+      color 0.18s,
+      transform 0.18s;
+  }
+  .auth-role-picker button:active,
+  .member-slot-grid label:active {
+    transform: scale(0.97);
+  }
+}

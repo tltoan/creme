@@ -105,7 +105,7 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="modal-overlay" />
-        <Dialog.Content className="modal-content">
+        <Dialog.Content className="modal-content cook-application">
           <Dialog.Close
             className="icon-button modal-close"
             aria-label="Close cook application"
@@ -115,8 +115,8 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
           <p className="eyebrow">FOR PEOPLE WHO LOVE TO COOK</p>
           <Dialog.Title>Bring your craft to the table.</Dialog.Title>
           <Dialog.Description>
-            Join our beta cook network. We’ll follow up about your experience,
-            availability, and next steps.
+            Tell us about your background, the food you love to cook, and how
+            you work. A résumé is welcome but optional. About 5–7 minutes.
           </Dialog.Description>
           {sent ? (
             <div className="success-message" role="status">
@@ -124,51 +124,176 @@ function CookApplication({ trigger }: { trigger?: React.ReactNode }) {
             </div>
           ) : (
             <form className="application-form" onSubmit={send}>
-              <label>
-                Your name
-                <input
-                  name="name"
-                  autoComplete="name"
-                  required
-                  maxLength={120}
-                />
-              </label>
-              <label>
-                Email address
-                <input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  maxLength={254}
-                />
-              </label>
-              <label>
-                Where are you based?
-                <input
-                  name="location"
-                  required
-                  maxLength={180}
-                  placeholder="City or neighborhood"
-                />
-              </label>
-              <label>
-                Tell us about your cooking experience
-                <textarea
-                  name="experience"
-                  required
-                  maxLength={2000}
-                  placeholder="Culinary student, freelance chef, specialties…"
-                />
-              </label>
-              <label>
-                When are you usually available?
-                <input
-                  name="availability"
-                  maxLength={300}
-                  placeholder="For example: Saturday mornings"
-                />
-              </label>
+              <fieldset className="application-section">
+                <legend>01 / About you</legend>
+                <label>
+                  Your name
+                  <input
+                    name="name"
+                    autoComplete="name"
+                    required
+                    maxLength={120}
+                  />
+                </label>
+                <label>
+                  Email address
+                  <input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    maxLength={254}
+                  />
+                </label>
+                <label>
+                  Where are you based?
+                  <input
+                    name="location"
+                    required
+                    maxLength={180}
+                    placeholder="City or neighborhood"
+                  />
+                </label>
+              </fieldset>
+              <fieldset className="application-section">
+                <legend>02 / Your cooking experience</legend>
+                <label>
+                  What best describes your background?
+                  <select name="Cooking background" required defaultValue="">
+                    <option value="" disabled>
+                      Select your background
+                    </option>
+                    <option>Culinary student</option>
+                    <option>Restaurant or catering cook</option>
+                    <option>Freelance or private chef</option>
+                    <option>Experienced home cook</option>
+                    <option>Other cooking background</option>
+                  </select>
+                </label>
+                <label>
+                  How long have you been cooking regularly?
+                  <select
+                    name="Years cooking regularly"
+                    required
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Select experience level
+                    </option>
+                    <option>Less than 1 year</option>
+                    <option>1–2 years</option>
+                    <option>3–5 years</option>
+                    <option>6–10 years</option>
+                    <option>More than 10 years</option>
+                  </select>
+                </label>
+                <label>
+                  Tell us about your cooking experience
+                  <textarea
+                    name="experience"
+                    required
+                    rows={5}
+                    maxLength={4000}
+                    aria-describedby="cook-experience-hint"
+                    placeholder="Where have you cooked, who have you cooked for, and what were you responsible for?"
+                  />
+                </label>
+                <p id="cook-experience-hint" className="field-help">
+                  Include restaurants, catering, private clients, culinary
+                  school, or cooking at home. Tell us about planning menus,
+                  shopping, preparing several meals at once, and working
+                  independently.
+                </p>
+                <label>
+                  Which cuisines or dishes are your specialties? (optional)
+                  <textarea
+                    name="Cuisines and signature dishes"
+                    maxLength={1500}
+                    placeholder="Your favorite cuisines, signature dishes, or the meals people ask you to make again."
+                  />
+                </label>
+                <label>
+                  Experience with dietary needs and allergies (optional)
+                  <textarea
+                    name="Dietary needs and allergy experience"
+                    maxLength={1500}
+                    placeholder="For example: vegetarian menus, high-protein meal prep, gluten-free cooking, or managing cross-contact. It’s okay if you’re still learning."
+                  />
+                </label>
+                <label>
+                  Culinary training or food-safety certifications (optional)
+                  <textarea
+                    name="Training and certifications"
+                    maxLength={1500}
+                    placeholder="School or program, qualifications, and any food-safety certification with its expiration date. Self-taught experience is welcome."
+                  />
+                </label>
+                <label>
+                  What would you cook for a household’s week? (optional)
+                  <textarea
+                    name="Sample weekly menu"
+                    maxLength={2000}
+                    placeholder="Share 3–5 meals you’d enjoy preparing, and how you’d keep the menu varied and practical to reheat."
+                  />
+                </label>
+              </fieldset>
+              <fieldset className="application-section">
+                <legend>03 / Résumé & work samples</legend>
+                <p className="field-help">
+                  Optional. Share a link to your résumé, LinkedIn, portfolio, or
+                  food photos. A view-only link from Google Drive or Dropbox
+                  works too—check that we can open it.
+                </p>
+                <label>
+                  Résumé or LinkedIn link (optional)
+                  <input
+                    name="Resume or LinkedIn URL"
+                    type="url"
+                    maxLength={2000}
+                    placeholder="https://…"
+                  />
+                </label>
+                <label>
+                  Portfolio or food photos link (optional)
+                  <input
+                    name="Portfolio or food photos URL"
+                    type="url"
+                    maxLength={2000}
+                    placeholder="https://…"
+                  />
+                </label>
+                <details className="resume-details">
+                  <summary>Prefer to paste your résumé?</summary>
+                  <label>
+                    Résumé text (optional)
+                    <textarea
+                      name="Resume text"
+                      rows={7}
+                      maxLength={12000}
+                      placeholder="Paste relevant roles, education, skills, and accomplishments here."
+                    />
+                  </label>
+                </details>
+              </fieldset>
+              <fieldset className="application-section">
+                <legend>04 / Your availability</legend>
+                <label>
+                  When are you usually available?
+                  <input
+                    name="availability"
+                    maxLength={300}
+                    placeholder="For example: Saturday mornings"
+                  />
+                </label>
+                <label>
+                  How far can you travel for a visit? (optional)
+                  <input
+                    name="Travel area"
+                    maxLength={300}
+                    placeholder="Neighborhoods, towns, or a comfortable travel radius"
+                  />
+                </label>
+              </fieldset>
               <p className="fine">
                 Submitting lets Misé contact you about cooking opportunities.
                 Your answers are sent through FormSubmit.

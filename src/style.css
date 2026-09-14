@@ -1337,6 +1337,41 @@ main:focus {
   width: 100%;
   margin-top: 3px;
 }
+.cook-application {
+  max-width: 620px;
+}
+.application-section {
+  min-width: 0;
+  display: grid;
+  gap: 17px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 22px 0 8px;
+  margin-top: 9px;
+}
+.application-section legend {
+  padding-right: 14px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.application-form .field-help {
+  font-size: 12px;
+  color: var(--muted-text);
+  line-height: 1.6;
+}
+.resume-details {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0 15px;
+}
+.resume-details summary {
+  cursor: pointer;
+  padding: 15px 0;
+  font-size: 12px;
+}
+.resume-details label {
+  padding: 4px 0 15px;
+}
 .success-message {
   background: var(--soft);
   border-radius: 16px;
